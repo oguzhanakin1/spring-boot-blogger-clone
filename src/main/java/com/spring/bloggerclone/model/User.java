@@ -45,12 +45,12 @@ public class User
     @Length(min = MIN_PASSWORD_LENGTH, message = "Password must be at least " + MIN_PASSWORD_LENGTH + " characters long")
     private String password;
 
-    @OneToMany(mappedBy = "user")
-    private Map<Long,Post> posts;
+    @OneToMany(mappedBy = "user", cascade = CascadeType.ALL, orphanRemoval = true)
+    private List<Post> posts;
 
-    @OneToMany(mappedBy = "user")
+    @OneToMany(mappedBy = "user", cascade = CascadeType.ALL, orphanRemoval = true)
     @JsonIgnore
-    private Map<Long,Comment> comments;
+    private List<Comment> comments;
 
     @Column(name = "user_create_time")
     private LocalDateTime userCreateTime;

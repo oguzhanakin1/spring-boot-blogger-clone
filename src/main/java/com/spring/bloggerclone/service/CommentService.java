@@ -14,7 +14,6 @@ import org.springframework.stereotype.Service;
 
 import java.time.LocalDateTime;
 import java.util.List;
-import java.util.Map;
 
 @Service
 public class CommentService implements ICommentService
@@ -36,18 +35,30 @@ public class CommentService implements ICommentService
         User user = userRepository.findByUsername(auth.getName())
                 .orElseThrow(()-> new UsernameNotFoundException("username not found"));
         comment.setUser(user);
-        Map<Long,Comment> usersComments = user.getComments();
-        usersComments.put(comment.getId(),comment);
+        List<Comment> usersComments = user.getComments();
+        usersComments.add(comment);
         Post post = postRepository.getById(postId);
         comment.setPost(post);
-        Map<Long,Comment> postsComments = post.getComments();
-        postsComments.put(comment.getId(),comment);
+        List<Comment> postsComments = post.getComments();
+        postsComments.add(comment);
         return commentRepository.save(comment);
     }
 
-    public void deleteComment(Long commentId, Long postId)
+    @Override
+    public void deleteComment(Long commentId)
     {
-        Post post = postRepository.getById(postId);
-
+        Authentication auth = SecurityContextHolder.getContext().getAuthentication();
+        User currentUser = userRepository.findByUsername(auth.getName())
+                .orElseThrow(()-> new UsernameNotFoundException("username not found"));
+        Comment currentComment = commentRepository.getById(commentId);
+        Post commentedPost = currentComment.getPost();
+        User postOwner = commentedPost.getUser();
+        User commentOwner = commentRepository.getById(commentId).getUser();
+        if(currentUser == postOwner )//|| currentUser == commentOwner)
+        {
+            commentRepository.deleteById(commentId);
+        }
+        else
+            throw new RuntimeException("You can't delete this comment!!!");
     }
 }

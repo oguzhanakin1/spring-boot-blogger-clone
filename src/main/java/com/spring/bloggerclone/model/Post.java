@@ -5,7 +5,7 @@ import lombok.*;
 
 import javax.persistence.*;
 import java.time.LocalDateTime;
-import java.util.Map;
+import java.util.List;
 
 @Entity
 @Table(name = "posts")
@@ -33,6 +33,6 @@ public class Post
     @JsonIgnore
     private User user;
 
-    @OneToMany(mappedBy = "post")
-    private Map<Long,Comment> comments;
+    @OneToMany(mappedBy = "post", cascade = CascadeType.ALL, orphanRemoval = true)
+    private List<Comment> comments;
 }

@@ -12,7 +12,7 @@ import org.springframework.stereotype.Service;
 
 import java.time.LocalDateTime;
 import java.util.List;
-import java.util.Map;
+
 
 @Service
 public class PostService implements IPostService
@@ -38,8 +38,8 @@ public class PostService implements IPostService
         User user = userRepository.findByUsername(auth.getName())
                 .orElseThrow(()-> new UsernameNotFoundException("username not found"));
         post.setUser(user);
-        Map<Long,Post> usersPosts = user.getPosts();
-        usersPosts.put(post.getId(),post);
+        List<Post> usersPosts = user.getPosts();
+        usersPosts.add(post);
 
         return postRepository.save(post);
     }
@@ -47,20 +47,28 @@ public class PostService implements IPostService
     @Override
     public void deletePost(Long postId)
     {
-        postRepository.getById(postId).getComments().clear();
-        postRepository.deleteById(postId);
+        Authentication auth = SecurityContextHolder.getContext().getAuthentication();
+        User currentUser = userRepository.findByUsername(auth.getName())
+                .orElseThrow(()-> new UsernameNotFoundException("username not found"));
+        User postOwner = postRepository.getById(postId).getUser();
+        if(currentUser == postOwner)
+        {
+            postRepository.deleteById(postId);
+        }
+        else
+            throw new RuntimeException("You can't delete this post!!!");
     }
 
     @Override
     public Post findByPostId(Long postId)
     {
-        return postRepository.findById(postId).orElseThrow(() -> new RuntimeException("There is no such post..."));
+        return postRepository.getById(postId);
     }
 
     @Override
     public Post editPost(Long postId, Post post)
     {
-        Post postToEdit = postRepository.findById(postId).orElseThrow(() -> new RuntimeException("There is no such post..."));
+        Post postToEdit = postRepository.getById(postId);
 
         postToEdit.setPostTitle(post.getPostTitle());
 
