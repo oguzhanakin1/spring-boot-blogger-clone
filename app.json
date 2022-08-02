@@ -1,0 +1,8 @@
+{
+  "name": "blogger-clone-app",
+  "buildpacks": [
+    {
+      "url": "heroku/jvm"
+    }
+  ]
+}
