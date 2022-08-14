@@ -12,5 +12,4 @@ public class BloggerCloneApplication
 	{
 		SpringApplication.run(BloggerCloneApplication.class, args);
 	}
-
 }

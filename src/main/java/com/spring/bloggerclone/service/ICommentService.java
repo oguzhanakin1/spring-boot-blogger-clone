@@ -8,5 +8,7 @@ public interface ICommentService
 
     void deleteComment(Long commentId);
 
+    Comment updateComment(Long commentId, Comment comment);
+
     //void deleteAllCommentsByPostId(Long postId);
 }

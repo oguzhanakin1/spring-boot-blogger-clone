@@ -19,6 +19,9 @@ public class Post
     @Column(name = "id", nullable = false)
     private Long id;
 
+    @Column(name = "post_photo")
+    private String postPhoto;
+
     @Column(name = "post_title", nullable = false)
     private String postTitle;
 

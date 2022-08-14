@@ -1,5 +1,6 @@
 package com.spring.bloggerclone.controller;
 
+import com.spring.bloggerclone.model.Post;
 import com.spring.bloggerclone.model.User;
 import com.spring.bloggerclone.service.IUserService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -29,9 +30,30 @@ public class UserController
         return ResponseEntity.ok(userService.findByUsername(username));
     }
 
+    @GetMapping("{userId}")
+    public ResponseEntity<?> findByUserId(@PathVariable Long userId)
+    {
+        return ResponseEntity.ok(userService.findByUserId(userId));
+    }
+
     @PostMapping
     public ResponseEntity<?> saveUser(@RequestBody User user)
     {
         return new ResponseEntity<>(userService.saveUser(user), HttpStatus.CREATED);
+    }
+
+    @DeleteMapping("{userId}")
+    public ResponseEntity<?> deleteUserByUserId(@PathVariable Long userId)
+    {
+
+        userService.deleteUser(userId);
+        return new ResponseEntity<>(HttpStatus.OK);
+    }
+
+    @PostMapping("{userId}")
+    public ResponseEntity<?> updateUser(@PathVariable Long userId,
+                                        @RequestBody User user)
+    {
+        return ResponseEntity.ok(userService.editUser(userId,user));
     }
 }

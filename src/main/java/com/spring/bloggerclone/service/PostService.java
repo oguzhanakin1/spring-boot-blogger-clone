@@ -24,6 +24,13 @@ public class PostService implements IPostService
     private UserRepository userRepository;
 
 
+    protected User getCurrentUser()
+    {
+        Authentication auth = SecurityContextHolder.getContext().getAuthentication();
+        return userRepository.findByUsername(auth.getName())
+                .orElseThrow(()-> new UsernameNotFoundException("username not found"));
+    }
+
     @Override
     public List<Post> showAllPosts()
     {
@@ -33,24 +40,19 @@ public class PostService implements IPostService
     @Override
     public Post createPost(Post post)
     {
+        User currentUser = getCurrentUser();
         post.setPostCreateTime(LocalDateTime.now());
-        Authentication auth = SecurityContextHolder.getContext().getAuthentication();
-        User user = userRepository.findByUsername(auth.getName())
-                .orElseThrow(()-> new UsernameNotFoundException("username not found"));
-        post.setUser(user);
-        List<Post> usersPosts = user.getPosts();
+        post.setUser(currentUser);
+        List<Post> usersPosts = currentUser.getPosts();
         usersPosts.add(post);
-
         return postRepository.save(post);
     }
 
     @Override
     public void deletePost(Long postId)
     {
-        Authentication auth = SecurityContextHolder.getContext().getAuthentication();
-        User currentUser = userRepository.findByUsername(auth.getName())
-                .orElseThrow(()-> new UsernameNotFoundException("username not found"));
         User postOwner = postRepository.getById(postId).getUser();
+        User currentUser = getCurrentUser();
         if(currentUser == postOwner)
         {
             postRepository.deleteById(postId);
@@ -68,12 +70,21 @@ public class PostService implements IPostService
     @Override
     public Post editPost(Long postId, Post post)
     {
-        Post postToEdit = postRepository.getById(postId);
+        User postOwner = postRepository.getById(postId).getUser();
+        User currentUser = getCurrentUser();
+        if(currentUser == postOwner)
+        {
+            Post postToEdit = postRepository.getById(postId);
 
-        postToEdit.setPostTitle(post.getPostTitle());
+            postToEdit.setPostTitle(post.getPostTitle());
 
-        postToEdit.setPostBody(post.getPostBody());
+            postToEdit.setPostBody(post.getPostBody());
 
-        return postRepository.save(postToEdit);
+            postToEdit.setPostPhoto(post.getPostPhoto());
+
+            return postRepository.save(postToEdit);
+        }
+        else
+            throw new RuntimeException("You can't edit this post");
     }
 }

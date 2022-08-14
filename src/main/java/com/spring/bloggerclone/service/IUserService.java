@@ -11,6 +11,11 @@ public interface IUserService
 
     Optional<User> findByUsername(String username);
 
+    User findByUserId(Long userId);
+
     User saveUser(User user);
 
+    void deleteUser(Long userId);
+
+    User editUser(Long userId, User user);
 }

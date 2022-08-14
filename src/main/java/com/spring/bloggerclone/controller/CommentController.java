@@ -1,8 +1,8 @@
 package com.spring.bloggerclone.controller;
 
 import com.spring.bloggerclone.model.Comment;
+import com.spring.bloggerclone.model.Post;
 import com.spring.bloggerclone.service.ICommentService;
-import com.spring.bloggerclone.service.IPostService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -16,8 +16,6 @@ public class CommentController
     @Autowired
     private ICommentService commentService;
 
-    private IPostService postService;
-
     @PostMapping("{postId}")
     public ResponseEntity<?> createComment(@RequestBody Comment comment, @PathVariable Long postId)
     {
@@ -29,5 +27,12 @@ public class CommentController
     {
         commentService.deleteComment(commentId);
         return new ResponseEntity<>(HttpStatus.OK);
+    }
+
+    @PostMapping("{commentId}")
+    public ResponseEntity<?> updatePost(@PathVariable Long commentId,
+                                        @RequestBody Comment comment)
+    {
+        return ResponseEntity.ok(commentService.updateComment(commentId, comment));
     }
 }

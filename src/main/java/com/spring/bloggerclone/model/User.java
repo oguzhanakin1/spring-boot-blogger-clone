@@ -11,7 +11,7 @@ import javax.validation.constraints.Email;
 import javax.validation.constraints.NotEmpty;
 import java.time.LocalDateTime;
 import java.util.List;
-import java.util.Map;
+
 
 @Entity
 @Table(name = "users")
@@ -44,6 +44,17 @@ public class User
     @Column(name = "password")
     @Length(min = MIN_PASSWORD_LENGTH, message = "Password must be at least " + MIN_PASSWORD_LENGTH + " characters long")
     private String password;
+
+    @NotEmpty
+    @Column(name = "first_name", nullable = false)
+    private String firstName;
+
+    @NotEmpty
+    @Column(name = "last_name", nullable = false)
+    private String lastName;
+
+    @Column(name = "profile_photo")
+    private String profilePhoto;
 
     @OneToMany(mappedBy = "user", cascade = CascadeType.ALL, orphanRemoval = true)
     private List<Post> posts;

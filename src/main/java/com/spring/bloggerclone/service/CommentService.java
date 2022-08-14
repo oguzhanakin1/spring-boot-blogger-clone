@@ -27,15 +27,20 @@ public class CommentService implements ICommentService
     @Autowired
     private PostRepository postRepository;
 
+    protected User getCurrentUser()
+    {
+        Authentication auth = SecurityContextHolder.getContext().getAuthentication();
+        return userRepository.findByUsername(auth.getName())
+                .orElseThrow(()-> new UsernameNotFoundException("username not found"));
+    }
+
     @Override
     public Comment createComment(Comment comment, Long postId)
     {
+        User currentUser = getCurrentUser();
         comment.setCommentCreateTime(LocalDateTime.now());
-        Authentication auth = SecurityContextHolder.getContext().getAuthentication();
-        User user = userRepository.findByUsername(auth.getName())
-                .orElseThrow(()-> new UsernameNotFoundException("username not found"));
-        comment.setUser(user);
-        List<Comment> usersComments = user.getComments();
+        comment.setUser(currentUser);
+        List<Comment> usersComments = currentUser.getComments();
         usersComments.add(comment);
         Post post = postRepository.getById(postId);
         comment.setPost(post);
@@ -47,18 +52,31 @@ public class CommentService implements ICommentService
     @Override
     public void deleteComment(Long commentId)
     {
-        Authentication auth = SecurityContextHolder.getContext().getAuthentication();
-        User currentUser = userRepository.findByUsername(auth.getName())
-                .orElseThrow(()-> new UsernameNotFoundException("username not found"));
+        User currentUser = getCurrentUser();
         Comment currentComment = commentRepository.getById(commentId);
         Post commentedPost = currentComment.getPost();
         User postOwner = commentedPost.getUser();
         User commentOwner = commentRepository.getById(commentId).getUser();
-        if(currentUser == postOwner )//|| currentUser == commentOwner)
+        if(currentUser == postOwner || currentUser == commentOwner)
         {
             commentRepository.deleteById(commentId);
         }
         else
             throw new RuntimeException("You can't delete this comment!!!");
+    }
+
+    @Override
+    public Comment updateComment(Long commentId, Comment comment)
+    {
+        User currentUser = getCurrentUser();
+        Comment commentToEdit = commentRepository.getById(commentId);
+        User commentOwner = commentToEdit.getUser();
+        if(currentUser == commentOwner)
+        {
+            commentToEdit.setCommentBody(comment.getCommentBody());
+            return commentToEdit;
+        }
+        else
+            throw new RuntimeException("You can't update this comment!!!");
     }
 }
