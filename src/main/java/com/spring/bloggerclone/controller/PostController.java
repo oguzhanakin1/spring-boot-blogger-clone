@@ -23,12 +23,17 @@ public class PostController
         return new ResponseEntity<>(postService.createPost(post), HttpStatus.CREATED);
     }
 
-
     @PostMapping("{postId}")
     public ResponseEntity<?> updatePost(@PathVariable Long postId,
                                         @RequestBody Post post)
     {
         return ResponseEntity.ok(postService.editPost(postId, post));
+    }
+
+    @GetMapping("/home")
+    public ResponseEntity<List<Post>> examplePostsForHomePage()
+    {
+        return ResponseEntity.ok(postService.examplePostsForHomePage());
     }
 
     @GetMapping("/all")

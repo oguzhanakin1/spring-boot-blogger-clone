@@ -11,7 +11,9 @@ import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDateTime;
+import java.util.ArrayList;
 import java.util.List;
+import java.util.Random;
 
 
 @Service
@@ -35,6 +37,20 @@ public class PostService implements IPostService
     public List<Post> showAllPosts()
     {
         return postRepository.findAll();
+    }
+
+    @Override
+    public List<Post> examplePostsForHomePage()
+    {
+        List<Post> allPosts = postRepository.findAll();
+        List<Post> examplePosts = new ArrayList<>();
+        for(int i = 0; i < 5 && i < allPosts.size(); i++)
+        {
+            Random random = new Random();
+            int a = random.nextInt(allPosts.size());
+            examplePosts.add(allPosts.get(a));
+        }
+        return examplePosts;
     }
 
     @Override

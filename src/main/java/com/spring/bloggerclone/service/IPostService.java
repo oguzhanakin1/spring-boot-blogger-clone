@@ -8,6 +8,8 @@ public interface IPostService
 {
     List<Post> showAllPosts();
 
+    List<Post> examplePostsForHomePage();
+
     Post createPost(Post post);
 
     void deletePost(Long postId);
