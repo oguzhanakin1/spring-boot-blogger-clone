@@ -44,7 +44,7 @@ public class PostService implements IPostService
     {
         List<Post> allPosts = postRepository.findAll();
         List<Post> examplePosts = new ArrayList<>();
-        for(int i = 0; i < 5 && i < allPosts.size(); i++)
+        for(int i = 0; i < 6 && i < allPosts.size(); i++)
         {
             Random random = new Random();
             int a = random.nextInt(allPosts.size());
