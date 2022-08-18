@@ -44,7 +44,7 @@ public class UserService implements IUserService
     @Override
     public User findByUserId(Long userId)
     {
-        return userRepository.getById(userId);
+        return userRepository.findById(userId).orElseThrow(()-> new UsernameNotFoundException("username not found"));
     }
 
     @Override

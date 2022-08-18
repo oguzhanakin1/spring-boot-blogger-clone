@@ -80,7 +80,7 @@ public class PostService implements IPostService
     @Override
     public Post findByPostId(Long postId)
     {
-        return postRepository.getById(postId);
+        return postRepository.findById(postId).orElseThrow(()-> new UsernameNotFoundException("username not found"));
     }
 
     @Override

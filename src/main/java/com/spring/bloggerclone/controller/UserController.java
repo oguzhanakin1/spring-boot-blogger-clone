@@ -1,6 +1,5 @@
 package com.spring.bloggerclone.controller;
 
-import com.spring.bloggerclone.model.Post;
 import com.spring.bloggerclone.model.User;
 import com.spring.bloggerclone.service.IUserService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -24,7 +23,7 @@ public class UserController
         return ResponseEntity.ok(userService.findAll());
     }
 
-    @GetMapping("{username}")
+    @GetMapping("/find/ {username}")
     public ResponseEntity<Optional<User>> findByUsername(@PathVariable String username)
     {
         return ResponseEntity.ok(userService.findByUsername(username));
