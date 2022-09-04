@@ -3,8 +3,6 @@ package com.spring.bloggerclone.service;
 import com.spring.bloggerclone.model.User;
 import com.spring.bloggerclone.repository.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.security.core.Authentication;
-import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
@@ -14,20 +12,13 @@ import java.util.List;
 import java.util.Optional;
 
 @Service
-public class UserService implements IUserService
+public class UserService extends BaseService implements IUserService
 {
     @Autowired
     private UserRepository userRepository;
 
     @Autowired
    private PasswordEncoder passwordEncoder;
-
-    protected User getCurrentUser()
-    {
-        Authentication auth = SecurityContextHolder.getContext().getAuthentication();
-        return userRepository.findByUsername(auth.getName())
-                .orElseThrow(()-> new UsernameNotFoundException("username not found"));
-    }
 
     @Override
     public List<User> findAll()

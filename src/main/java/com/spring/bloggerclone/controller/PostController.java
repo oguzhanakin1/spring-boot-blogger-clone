@@ -30,12 +30,6 @@ public class PostController
         return ResponseEntity.ok(postService.editPost(postId, post));
     }
 
-    @GetMapping("/home")
-    public ResponseEntity<List<Post>> examplePostsForHomePage()
-    {
-        return ResponseEntity.ok(postService.examplePostsForHomePage());
-    }
-
     @GetMapping("/all")
     public ResponseEntity<List<Post>> findAll()
     {

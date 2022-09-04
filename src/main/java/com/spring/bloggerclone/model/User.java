@@ -60,7 +60,6 @@ public class User
     private List<Post> posts;
 
     @OneToMany(mappedBy = "user", cascade = CascadeType.ALL, orphanRemoval = true)
-    @JsonIgnore
     private List<Comment> comments;
     
     @Column(name = "user_create_time")

@@ -7,16 +7,13 @@ import com.spring.bloggerclone.repository.CommentRepository;
 import com.spring.bloggerclone.repository.PostRepository;
 import com.spring.bloggerclone.repository.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.security.core.Authentication;
-import org.springframework.security.core.context.SecurityContextHolder;
-import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDateTime;
 import java.util.List;
 
 @Service
-public class CommentService implements ICommentService
+public class CommentService extends BaseService implements ICommentService
 {
     @Autowired
     private UserRepository userRepository;
@@ -27,13 +24,6 @@ public class CommentService implements ICommentService
     @Autowired
     private PostRepository postRepository;
 
-    protected User getCurrentUser()
-    {
-        Authentication auth = SecurityContextHolder.getContext().getAuthentication();
-        return userRepository.findByUsername(auth.getName())
-                .orElseThrow(()-> new UsernameNotFoundException("username not found"));
-    }
-
     @Override
     public Comment createComment(Comment comment, Long postId)
     {
@@ -42,7 +32,7 @@ public class CommentService implements ICommentService
         comment.setUser(currentUser);
         List<Comment> usersComments = currentUser.getComments();
         usersComments.add(comment);
-        Post post = postRepository.getById(postId);
+        Post post = postRepository.findById(postId).orElseThrow(()-> new RuntimeException("Post not found!!"));
         comment.setPost(post);
         List<Comment> postsComments = post.getComments();
         postsComments.add(comment);
@@ -69,7 +59,7 @@ public class CommentService implements ICommentService
     public Comment updateComment(Long commentId, Comment comment)
     {
         User currentUser = getCurrentUser();
-        Comment commentToEdit = commentRepository.getById(commentId);
+        Comment commentToEdit = commentRepository.findById(commentId).orElseThrow(()-> new RuntimeException("comment not found"));
         User commentOwner = commentToEdit.getUser();
         if(currentUser == commentOwner)
         {

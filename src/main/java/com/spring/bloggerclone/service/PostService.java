@@ -5,8 +5,6 @@ import com.spring.bloggerclone.model.User;
 import com.spring.bloggerclone.repository.PostRepository;
 import com.spring.bloggerclone.repository.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.security.core.Authentication;
-import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
 
@@ -17,21 +15,13 @@ import java.util.Random;
 
 
 @Service
-public class PostService implements IPostService
+public class PostService extends BaseService implements IPostService
 {
     @Autowired
     private PostRepository postRepository;
 
     @Autowired
     private UserRepository userRepository;
-
-
-    protected User getCurrentUser()
-    {
-        Authentication auth = SecurityContextHolder.getContext().getAuthentication();
-        return userRepository.findByUsername(auth.getName())
-                .orElseThrow(()-> new UsernameNotFoundException("username not found"));
-    }
 
     @Override
     public List<Post> showAllPosts()
