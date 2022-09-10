@@ -4,14 +4,15 @@ import com.spring.bloggerclone.model.Post;
 import com.spring.bloggerclone.model.User;
 import com.spring.bloggerclone.repository.PostRepository;
 import com.spring.bloggerclone.repository.UserRepository;
+import com.spring.bloggerclone.response.PostResponse;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Random;
+import java.util.stream.Collectors;
 
 
 @Service
@@ -24,9 +25,12 @@ public class PostService extends BaseService implements IPostService
     private UserRepository userRepository;
 
     @Override
-    public List<Post> showAllPosts()
+    public List<PostResponse> showAllPosts()
     {
-        return postRepository.findAll();
+       List<Post> list = postRepository.findAll();
+       return list.stream().map(p -> {
+           return new PostResponse(p);
+       }).collect(Collectors.toList());
     }
 
     @Override
@@ -70,7 +74,7 @@ public class PostService extends BaseService implements IPostService
     @Override
     public Post findByPostId(Long postId)
     {
-        return postRepository.findById(postId).orElseThrow(()-> new UsernameNotFoundException("username not found"));
+        return postRepository.findById(postId).orElseThrow(()-> new RuntimeException("post not found"));
     }
 
     @Override
@@ -93,4 +97,5 @@ public class PostService extends BaseService implements IPostService
         else
             throw new RuntimeException("You can't edit this post");
     }
+
 }

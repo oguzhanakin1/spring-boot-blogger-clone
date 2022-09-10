@@ -6,11 +6,13 @@ import com.spring.bloggerclone.model.User;
 import com.spring.bloggerclone.repository.CommentRepository;
 import com.spring.bloggerclone.repository.PostRepository;
 import com.spring.bloggerclone.repository.UserRepository;
+import com.spring.bloggerclone.response.CommentResponse;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDateTime;
 import java.util.List;
+import java.util.stream.Collectors;
 
 @Service
 public class CommentService extends BaseService implements ICommentService
@@ -64,9 +66,33 @@ public class CommentService extends BaseService implements ICommentService
         if(currentUser == commentOwner)
         {
             commentToEdit.setCommentBody(comment.getCommentBody());
-            return commentToEdit;
+            return commentRepository.save(commentToEdit);
         }
         else
             throw new RuntimeException("You can't update this comment!!!");
     }
+
+    @Override
+    public List<Comment> showAllComments()
+    {
+        return commentRepository.findAll();
+    }
+
+
+    @Override
+    public List<CommentResponse> findByPostId(Long postId)
+    {
+        Post post = postRepository.findById(postId).orElse(null);
+        List<Comment> comments = post.getComments();
+        return comments.stream().map(p -> {
+            return new CommentResponse(p);
+        }).collect(Collectors.toList());
+    }
+
+    @Override
+    public Comment findByCommentId(Long commentId)
+    {
+        return commentRepository.findById(commentId).orElseThrow(()-> new RuntimeException("comment not found"));
+    }
+
 }

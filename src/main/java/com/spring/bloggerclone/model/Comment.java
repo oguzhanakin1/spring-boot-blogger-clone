@@ -1,8 +1,6 @@
 package com.spring.bloggerclone.model;
 
-import com.fasterxml.jackson.annotation.JsonIdentityInfo;
 import com.fasterxml.jackson.annotation.JsonIgnore;
-import com.fasterxml.jackson.annotation.ObjectIdGenerators;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -22,7 +20,7 @@ public class Comment
     @Column(name = "id")
     private Long id;
 
-    @Column(name = "comment_body")
+    @Column(name = "comment_body",columnDefinition = "TEXT")
     private String commentBody;
 
     @Column(name = "comment_create_time")
@@ -30,11 +28,11 @@ public class Comment
 
     @ManyToOne
     @JoinColumn(name = "post_id")
-    @JsonIdentityInfo(generator = ObjectIdGenerators.PropertyGenerator.class, property = "id", scope = Long.class)
+    @JsonIgnore
     private Post post;
 
     @ManyToOne
     @JoinColumn(name = "user_id")
-    @JsonIdentityInfo(generator = ObjectIdGenerators.PropertyGenerator.class, property = "id", scope = Long.class)
+    @JsonIgnore
     private User user;
 }

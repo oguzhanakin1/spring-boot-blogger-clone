@@ -1,12 +1,13 @@
 package com.spring.bloggerclone.service;
 
 import com.spring.bloggerclone.model.Post;
+import com.spring.bloggerclone.response.PostResponse;
 
 import java.util.List;
 
 public interface IPostService
 {
-    List<Post> showAllPosts();
+    List<PostResponse> showAllPosts();
 
     List<Post> examplePostsForHomePage();
 

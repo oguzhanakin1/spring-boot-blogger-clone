@@ -1,6 +1,8 @@
 package com.spring.bloggerclone.model;
 
+import com.fasterxml.jackson.annotation.JsonIdentityInfo;
 import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.ObjectIdGenerators;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -18,6 +20,9 @@ import java.util.List;
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
+@JsonIdentityInfo(
+        generator = ObjectIdGenerators.PropertyGenerator.class,
+        property = "id")
 public class User
 {
     private static final int MIN_USERNAME_LENGTH = 3;
@@ -53,13 +58,14 @@ public class User
     @Column(name = "last_name", nullable = false)
     private String lastName;
 
-    @Column(name = "profile_photo")
+    @Column(name = "profile_photo",columnDefinition = "TEXT")
     private String profilePhoto;
 
     @OneToMany(mappedBy = "user", cascade = CascadeType.ALL, orphanRemoval = true)
     private List<Post> posts;
 
     @OneToMany(mappedBy = "user", cascade = CascadeType.ALL, orphanRemoval = true)
+    @JsonIgnore
     private List<Comment> comments;
     
     @Column(name = "user_create_time")

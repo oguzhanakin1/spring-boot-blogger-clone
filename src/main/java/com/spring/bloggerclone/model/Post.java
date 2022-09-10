@@ -12,6 +12,9 @@ import java.util.List;
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
+@JsonIdentityInfo(
+        generator = ObjectIdGenerators.PropertyGenerator.class,
+        property = "id")
 public class Post
 {
     @Id
@@ -19,21 +22,24 @@ public class Post
     @Column(name = "id", nullable = false)
     private Long id;
 
-    @Column(name = "post_photo")
+    @Column(name = "post_photo",columnDefinition = "TEXT")
     private String postPhoto;
 
     @Column(name = "post_title", nullable = false)
     private String postTitle;
 
-    @Column(name = "post_body", nullable = false)
+    @Column(name = "post_description", nullable = false)
+    private String postDescription;
+
+    @Column(name = "post_body",columnDefinition = "TEXT", nullable = false)
     private String postBody;
 
     @Column(name="post_create_time")
     private LocalDateTime postCreateTime;
 
-    @ManyToOne
-    @JoinColumn(name = "user_id")
-    @JsonIdentityInfo(generator = ObjectIdGenerators.PropertyGenerator.class, property = "id", scope = Long.class)
+    @ManyToOne(fetch = FetchType.EAGER)
+    @JoinColumn(name = "user_id",nullable = false)
+    @JsonIgnore
     private User user;
 
     @OneToMany(mappedBy = "post", cascade = CascadeType.ALL, orphanRemoval = true)

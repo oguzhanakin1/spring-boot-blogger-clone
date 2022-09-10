@@ -1,6 +1,7 @@
 package com.spring.bloggerclone.controller;
 
 import com.spring.bloggerclone.model.Post;
+import com.spring.bloggerclone.response.PostResponse;
 import com.spring.bloggerclone.service.IPostService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -31,7 +32,7 @@ public class PostController
     }
 
     @GetMapping("/all")
-    public ResponseEntity<List<Post>> findAll()
+    public ResponseEntity<List<PostResponse>> findAll()
     {
         return ResponseEntity.ok(postService.showAllPosts());
     }
