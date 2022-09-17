@@ -23,7 +23,7 @@ public class UserController
         return ResponseEntity.ok(userService.findAll());
     }
 
-    @GetMapping("/find/ {username}")
+    @GetMapping("/find/{username}")
     public ResponseEntity<Optional<User>> findByUsername(@PathVariable String username)
     {
         return ResponseEntity.ok(userService.findByUsername(username));
