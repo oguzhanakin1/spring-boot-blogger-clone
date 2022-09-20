@@ -4,6 +4,7 @@ import com.spring.bloggerclone.model.Post;
 import lombok.Data;
 
 import java.time.LocalDateTime;
+import java.util.List;
 
 @Data
 public class PostResponse
@@ -18,8 +19,9 @@ public class PostResponse
     String lastName;
     String profilePhoto;
     LocalDateTime userCreateTime;
+    List<LikeResponse> postsLikes;
 
-    public PostResponse(Post entity)
+    public PostResponse(Post entity, List<LikeResponse> likes)
     {
         this.id = entity.getId();
         this.postTitle = entity.getPostTitle();
@@ -31,6 +33,6 @@ public class PostResponse
         this.lastName = entity.getUser().getLastName();
         this.profilePhoto = entity.getUser().getProfilePhoto();
         this.userCreateTime = entity.getUser().getUserCreateTime();
-
+        this.postsLikes = likes;
     }
 }

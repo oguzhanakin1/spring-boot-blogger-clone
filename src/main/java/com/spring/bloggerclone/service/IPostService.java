@@ -9,13 +9,13 @@ public interface IPostService
 {
     List<PostResponse> showAllPosts();
 
-    List<Post> examplePostsForHomePage();
+    List<PostResponse> examplePostsForHomePage();
 
     Post createPost(Post post);
 
     void deletePost(Long postId);
 
-    Post findByPostId(Long postId);
+    PostResponse findByPostId(Long postId);
 
     Post editPost(Long postId, Post post);
 }

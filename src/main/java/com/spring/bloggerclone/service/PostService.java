@@ -4,6 +4,7 @@ import com.spring.bloggerclone.model.Post;
 import com.spring.bloggerclone.model.User;
 import com.spring.bloggerclone.repository.PostRepository;
 import com.spring.bloggerclone.repository.UserRepository;
+import com.spring.bloggerclone.response.LikeResponse;
 import com.spring.bloggerclone.response.PostResponse;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -24,17 +25,21 @@ public class PostService extends BaseService implements IPostService
     @Autowired
     private UserRepository userRepository;
 
+    @Autowired
+    private ILikeService likeService;
+
     @Override
     public List<PostResponse> showAllPosts()
     {
        List<Post> list = postRepository.findAll();
        return list.stream().map(p -> {
-           return new PostResponse(p);
+           List<LikeResponse> likes = likeService.showPostsLikesByPostId(p.getId());
+           return new PostResponse(p,likes);
        }).collect(Collectors.toList());
     }
 
     @Override
-    public List<Post> examplePostsForHomePage()
+    public List<PostResponse> examplePostsForHomePage()
     {
         List<Post> allPosts = postRepository.findAll();
         List<Post> examplePosts = new ArrayList<>();
@@ -44,7 +49,10 @@ public class PostService extends BaseService implements IPostService
             int a = random.nextInt(allPosts.size());
             examplePosts.add(allPosts.get(a));
         }
-        return examplePosts;
+        return examplePosts.stream().map(p -> {
+            List<LikeResponse> likes = likeService.showPostsLikesByPostId(p.getId());
+            return new PostResponse(p,likes);
+        }).collect(Collectors.toList());
     }
 
     @Override
@@ -72,9 +80,11 @@ public class PostService extends BaseService implements IPostService
     }
 
     @Override
-    public Post findByPostId(Long postId)
+    public PostResponse findByPostId(Long postId)
     {
-        return postRepository.findById(postId).orElseThrow(()-> new RuntimeException("post not found"));
+        Post post = postRepository.findById(postId).orElseThrow(()-> new RuntimeException("post not found"));
+        List<LikeResponse> likes = likeService.showPostsLikesByPostId(postId);
+        return new PostResponse(post,likes);
     }
 
     @Override
@@ -97,5 +107,4 @@ public class PostService extends BaseService implements IPostService
         else
             throw new RuntimeException("You can't edit this post");
     }
-
 }

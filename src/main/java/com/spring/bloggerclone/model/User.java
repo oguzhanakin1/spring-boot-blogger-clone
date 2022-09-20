@@ -20,9 +20,6 @@ import java.util.List;
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
-@JsonIdentityInfo(
-        generator = ObjectIdGenerators.PropertyGenerator.class,
-        property = "id")
 public class User
 {
     private static final int MIN_USERNAME_LENGTH = 3;
@@ -67,6 +64,10 @@ public class User
     @OneToMany(mappedBy = "user", cascade = CascadeType.ALL, orphanRemoval = true)
     @JsonIgnore
     private List<Comment> comments;
+
+    @OneToMany(mappedBy = "user", cascade = CascadeType.ALL, orphanRemoval = true)
+    @JsonIgnore
+    private List<Like> likes;
     
     @Column(name = "user_create_time")
     private LocalDateTime userCreateTime;

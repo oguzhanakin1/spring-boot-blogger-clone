@@ -1,6 +1,6 @@
 package com.spring.bloggerclone.controller;
 
-import com.spring.bloggerclone.model.Post;
+import com.spring.bloggerclone.response.PostResponse;
 import com.spring.bloggerclone.service.IPostService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
@@ -18,7 +18,7 @@ public class HomeController
     private IPostService postService;
 
     @GetMapping("/home")
-    public ResponseEntity<List<Post>> examplePostsForHomePage()
+    public ResponseEntity<List<PostResponse>> examplePostsForHomePage()
     {
         return ResponseEntity.ok(postService.examplePostsForHomePage());
     }
