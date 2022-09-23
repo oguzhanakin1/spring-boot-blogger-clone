@@ -12,6 +12,7 @@ public class PostResponse
     Long id;
     String postTitle;
     String postDescription;
+    String postPhoto;
     String postBody;
     LocalDateTime postCreateTime;
     Long userId;
@@ -26,6 +27,7 @@ public class PostResponse
         this.id = entity.getId();
         this.postTitle = entity.getPostTitle();
         this.postDescription = entity.getPostDescription();
+        this.postPhoto =entity.getPostPhoto();
         this.postBody = entity.getPostBody();
         this.postCreateTime = entity.getPostCreateTime();
         this.userId = entity.getUser().getId();
