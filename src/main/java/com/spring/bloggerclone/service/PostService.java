@@ -34,7 +34,7 @@ public class PostService extends BaseService implements IPostService
        List<Post> list = postRepository.findAll();
        return list.stream().map(p -> {
            List<LikeResponse> likes = likeService.showPostsLikesByPostId(p.getId());
-           return new PostResponse(p,likes);
+           return new PostResponse(p, likes);
        }).collect(Collectors.toList());
     }
 

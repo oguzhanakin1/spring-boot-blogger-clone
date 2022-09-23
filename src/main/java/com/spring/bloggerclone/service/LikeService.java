@@ -6,7 +6,6 @@ import com.spring.bloggerclone.model.User;
 import com.spring.bloggerclone.repository.LikeRepository;
 import com.spring.bloggerclone.repository.PostRepository;
 import com.spring.bloggerclone.repository.UserRepository;
-import com.spring.bloggerclone.request.LikeCreateRequest;
 import com.spring.bloggerclone.response.LikeResponse;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -15,7 +14,7 @@ import java.util.List;
 import java.util.stream.Collectors;
 
 @Service
-public class LikeService implements ILikeService
+public class LikeService extends BaseService implements ILikeService
 {
     @Autowired
     private LikeRepository likeRepository;
@@ -27,14 +26,14 @@ public class LikeService implements ILikeService
     private PostRepository postRepository;
 
     @Override
-    public Like createLike(LikeCreateRequest request)
+    public Like createLike(Like like, Long postId)
     {
-        User user = userRepository.findById(request.getUserId()).orElseThrow(null);
-        Post post = postRepository.findById(request.getPostId()).orElseThrow(null);
-        Like like = new Like();
-        like.setId(request.getId());
-        like.setUser(user);
+        User currentUser = getCurrentUser();
+        like.setUser(currentUser);
+        currentUser.getLikes().add(like);
+        Post post = postRepository.findById(postId).orElse(null);
         like.setPost(post);
+        post.getLikes().add(like);
         return likeRepository.save(like);
 
     }
