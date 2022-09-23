@@ -26,8 +26,9 @@ public class LikeService extends BaseService implements ILikeService
     private PostRepository postRepository;
 
     @Override
-    public Like createLike(Like like, Long postId)
+    public Like createLike(Long postId)
     {
+        Like like = new Like();
         User currentUser = getCurrentUser();
         like.setUser(currentUser);
         currentUser.getLikes().add(like);

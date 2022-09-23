@@ -19,9 +19,9 @@ public class LikeController
     ILikeService likeService;
 
     @PostMapping("{postId}")
-    public ResponseEntity<?> createLike(@RequestBody Like like, @PathVariable Long postId)
+    public ResponseEntity<?> createLike( @PathVariable Long postId)
     {
-        return new ResponseEntity<>(likeService.createLike(like, postId), HttpStatus.CREATED);
+        return new ResponseEntity<>(likeService.createLike(postId), HttpStatus.CREATED);
     }
 
     @GetMapping
