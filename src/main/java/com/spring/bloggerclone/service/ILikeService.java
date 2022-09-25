@@ -12,6 +12,8 @@ public interface ILikeService
 
     List<LikeResponse> showAllLikes();
 
+    void deleteLikeByUserIdAndPostId(Long userId, Long postId);
+
     List<LikeResponse> showPostsLikesByPostId(Long postId);
 
 

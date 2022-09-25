@@ -36,7 +36,6 @@ public class LikeService extends BaseService implements ILikeService
         like.setPost(post);
         post.getLikes().add(like);
         return likeRepository.save(like);
-
     }
 
     @Override
@@ -48,6 +47,12 @@ public class LikeService extends BaseService implements ILikeService
         }).collect(Collectors.toList());
     }
 
+    @Override
+    public void deleteLikeByUserIdAndPostId(Long userId, Long postId)
+    {
+        Like like = likeRepository.findLikeByUserIdAndPostId(userId, postId);
+        likeRepository.delete(like);
+    }
     @Override
     public List<LikeResponse> showPostsLikesByPostId(Long postId)
     {

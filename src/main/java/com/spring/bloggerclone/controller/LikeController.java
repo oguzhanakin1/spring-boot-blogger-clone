@@ -1,6 +1,5 @@
 package com.spring.bloggerclone.controller;
 
-import com.spring.bloggerclone.model.Like;
 import com.spring.bloggerclone.response.LikeResponse;
 import com.spring.bloggerclone.service.ILikeService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -30,6 +29,12 @@ public class LikeController
         return ResponseEntity.ok(likeService.showAllLikes());
     }
 
+    @DeleteMapping("/delete")
+    public ResponseEntity<?> findLikeByUserIdAndPostId(@RequestParam Long userId, @RequestParam Long postId)
+    {
+        likeService.deleteLikeByUserIdAndPostId(userId, postId);
+        return new ResponseEntity<>(HttpStatus.OK);
+    }
     @GetMapping("{postId}")
     public ResponseEntity<List<LikeResponse>> showPostsLikesByPostId(@PathVariable Long postId)
     {

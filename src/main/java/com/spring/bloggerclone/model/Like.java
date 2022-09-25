@@ -20,12 +20,12 @@ public class Like
     @Column(name = "id", nullable = false)
     private Long id;
 
-    @ManyToOne(fetch = FetchType.EAGER)
+    @ManyToOne
     @JoinColumn(name = "post_id",nullable = false)
     @JsonIgnore
     private Post post;
 
-    @ManyToOne(fetch = FetchType.EAGER)
+    @ManyToOne
     @JoinColumn(name = "user_id",nullable = false)
     @JsonIgnore
     private User user;
