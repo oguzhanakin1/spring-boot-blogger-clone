@@ -71,7 +71,6 @@ public class UserService extends BaseService implements IUserService
             userToEdit.setUsername(user.getUsername());
             userToEdit.setEmail(user.getEmail());
             userToEdit.setProfilePhoto(user.getProfilePhoto());
-            userToEdit.setPassword(accountOwner.getPassword());
             return userRepository.save(userToEdit);
         }
         else
