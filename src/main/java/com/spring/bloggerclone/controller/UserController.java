@@ -55,4 +55,11 @@ public class UserController
     {
         return ResponseEntity.ok(userService.editUser(userId,user));
     }
+
+    @PostMapping("/change/{userId}")
+    public ResponseEntity<?> changePassword(@PathVariable Long userId,
+                                        @RequestBody String password)
+    {
+        return ResponseEntity.ok(userService.changePassword(userId,password));
+    }
 }
