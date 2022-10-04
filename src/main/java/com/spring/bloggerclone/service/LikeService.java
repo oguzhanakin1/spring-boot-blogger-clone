@@ -51,7 +51,7 @@ public class LikeService extends BaseService implements ILikeService
     public void deleteLikeByUserIdAndPostId(Long userId, Long postId)
     {
         Like like = likeRepository.findLikeByUserIdAndPostId(userId, postId);
-        likeRepository.delete(like);
+        likeRepository.deleteById(like.getId());
     }
     @Override
     public List<LikeResponse> showPostsLikesByPostId(Long postId)

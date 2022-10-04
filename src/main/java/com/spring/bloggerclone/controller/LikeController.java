@@ -22,7 +22,6 @@ public class LikeController
     {
         return new ResponseEntity<>(likeService.createLike(postId), HttpStatus.CREATED);
     }
-
     @GetMapping
     public ResponseEntity<List<LikeResponse>> showAllLikes()
     {

@@ -49,14 +49,14 @@ public class UserController
         return new ResponseEntity<>(HttpStatus.OK);
     }
 
-    @PostMapping("{userId}")
+    @PutMapping("{userId}")
     public ResponseEntity<?> updateUser(@PathVariable Long userId,
                                         @RequestBody User user)
     {
         return ResponseEntity.ok(userService.editUser(userId,user));
     }
 
-    @PostMapping("/change/{userId}")
+    @PutMapping("/change/{userId}")
     public ResponseEntity<?> changePassword(@PathVariable Long userId,
                                         @RequestBody String password)
     {
