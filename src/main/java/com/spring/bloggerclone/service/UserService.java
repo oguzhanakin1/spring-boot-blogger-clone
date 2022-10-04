@@ -89,8 +89,7 @@ public class UserService extends BaseService implements IUserService
                 throw new RuntimeException("Password must be at least 6 length!!!");
             else
             {
-                System.out.println("Şifre = :" + password);
-                userToEdit.setPassword(password);
+                userToEdit.setPassword(passwordEncoder.encode(password));
                 return userRepository.save(userToEdit);
             }
         }

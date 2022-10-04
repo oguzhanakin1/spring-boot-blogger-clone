@@ -21,7 +21,6 @@ public class AuthenticationService implements IAuthenticationService
     @Autowired
     private IJwtProvider jwtProvider;
 
-
     @Override
     public String signInAndReturnJWT(User signInRequest)
     {
