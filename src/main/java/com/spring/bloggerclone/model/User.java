@@ -19,13 +19,15 @@ import java.util.List;
 @Table(name = "users")
 @Data
 @AllArgsConstructor
-@NoArgsConstructor
 public class User
 {
     private static final int MIN_USERNAME_LENGTH = 3;
     private static final int MAX_USERNAME_LENGTH = 16;
     private static final int MIN_PASSWORD_LENGTH = 6;
 
+    public User()
+    {
+    }
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "id")
@@ -68,6 +70,10 @@ public class User
     @OneToMany(mappedBy = "user", cascade = CascadeType.ALL, orphanRemoval = true)
     @JsonIgnore
     private List<Like> likes;
+
+    @OneToMany(mappedBy = "user", cascade = CascadeType.ALL, orphanRemoval = true)
+    @JsonIgnore
+    private List<RefreshToken> refreshTokens;
     
     @Column(name = "user_create_time")
     private LocalDateTime userCreateTime;

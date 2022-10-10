@@ -52,8 +52,6 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter
                 .antMatchers("/api/authentication/**").permitAll()
                 .antMatchers("/api/home").permitAll()
                 .anyRequest().authenticated();
-        //http.formLogin().loginProcessingUrl("/login").failureUrl("/login.html?loginFailed=true");// just a login page to see if web driver gets the jwt automatically
-        //http.rememberMe().userDetailsService(customUserDetailsService);
         http.httpBasic();
         http.addFilterBefore(jwtAuthorizationFilter(), UsernamePasswordAuthenticationFilter.class);// filters the request by token
     }

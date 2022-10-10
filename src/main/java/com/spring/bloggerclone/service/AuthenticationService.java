@@ -1,7 +1,9 @@
 package com.spring.bloggerclone.service;
 
+import com.spring.bloggerclone.model.RefreshToken;
 import com.spring.bloggerclone.model.User;
 import com.spring.bloggerclone.repository.UserRepository;
+import com.spring.bloggerclone.security.CustomUserDetailsService;
 import com.spring.bloggerclone.security.UserPrincipal;
 import com.spring.bloggerclone.security.jwt.IJwtProvider;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -19,6 +21,9 @@ public class AuthenticationService implements IAuthenticationService
     private AuthenticationManager authenticationManager;
 
     @Autowired
+    private CustomUserDetailsService detailsService;
+
+    @Autowired
     private IJwtProvider jwtProvider;
 
     @Override
@@ -29,6 +34,14 @@ public class AuthenticationService implements IAuthenticationService
         );
         UserPrincipal userPrincipal = (UserPrincipal) authentication.getPrincipal();
 
+        return jwtProvider.generateToken(userPrincipal);
+    }
+
+    @Override
+    public String refreshToken(RefreshToken token)
+    {
+        User user = token.getUser();
+        UserPrincipal userPrincipal = (UserPrincipal) detailsService.loadUserByUsername(user.getUsername());
         return jwtProvider.generateToken(userPrincipal);
     }
 }
