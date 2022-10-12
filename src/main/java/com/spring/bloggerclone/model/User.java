@@ -1,8 +1,6 @@
 package com.spring.bloggerclone.model;
 
-import com.fasterxml.jackson.annotation.JsonIdentityInfo;
 import com.fasterxml.jackson.annotation.JsonIgnore;
-import com.fasterxml.jackson.annotation.ObjectIdGenerators;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -18,6 +16,7 @@ import java.util.List;
 @Entity
 @Table(name = "users")
 @Data
+@NoArgsConstructor
 @AllArgsConstructor
 public class User
 {
@@ -25,9 +24,6 @@ public class User
     private static final int MAX_USERNAME_LENGTH = 16;
     private static final int MIN_PASSWORD_LENGTH = 6;
 
-    public User()
-    {
-    }
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "id")
@@ -71,10 +67,6 @@ public class User
     @JsonIgnore
     private List<Like> likes;
 
-    @OneToMany(mappedBy = "user", cascade = CascadeType.ALL, orphanRemoval = true)
-    @JsonIgnore
-    private List<RefreshToken> refreshTokens;
-    
     @Column(name = "user_create_time")
     private LocalDateTime userCreateTime;
 

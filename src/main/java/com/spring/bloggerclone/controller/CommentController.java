@@ -29,7 +29,7 @@ public class CommentController
         return new ResponseEntity<>(HttpStatus.OK);
     }
 
-    @PostMapping("/edit/{commentId}")
+    @PutMapping("/edit/{commentId}")
     public ResponseEntity<?> updateComment(@PathVariable Long commentId,
                                         @RequestBody Comment comment)
     {

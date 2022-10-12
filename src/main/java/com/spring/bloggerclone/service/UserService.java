@@ -77,23 +77,4 @@ public class UserService extends BaseService implements IUserService
         else
             throw new RuntimeException("You can't edit this profile!!!");
     }
-
-    @Override
-    public User changePassword(Long userId, String password)
-    {
-        User userToEdit = userRepository.getById(userId);
-        User accountOwner = getCurrentUser();
-        if(accountOwner == userToEdit)
-        {
-            if(password.length() < 6)
-                throw new RuntimeException("Password must be at least 6 length!!!");
-            else
-            {
-                userToEdit.setPassword(passwordEncoder.encode(password));
-                return userRepository.save(userToEdit);
-            }
-        }
-        else
-            throw new RuntimeException("You can't edit this profile!!!");
-    }
 }

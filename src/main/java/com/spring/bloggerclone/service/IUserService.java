@@ -19,5 +19,4 @@ public interface IUserService
 
     User editUser(Long userId, User user);
 
-    User changePassword(Long userId, String password);
 }
