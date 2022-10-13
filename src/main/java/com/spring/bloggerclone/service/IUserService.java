@@ -17,6 +17,8 @@ public interface IUserService
 
     void deleteUser(Long userId);
 
+    User changeProfilePhoto(Long userId, User user);
+
     User editUser(Long userId, User user);
 
     User changePassword(Long userId, String password);

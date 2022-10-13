@@ -59,6 +59,7 @@ public class UserService extends BaseService implements IUserService
             throw new RuntimeException("You can't delete this account!!!");
     }
 
+    @Override
     public User changeProfilePhoto(Long userId, User user)
     {
         User userToEdit = userRepository.getById(userId);

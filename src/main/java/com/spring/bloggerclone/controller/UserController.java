@@ -62,4 +62,11 @@ public class UserController
     {
         return ResponseEntity.ok(userService.changePassword(userId,password));
     }
+
+    @PutMapping("/changePhoto/{userId}")
+    public ResponseEntity<?> changeProfilePhoto(@PathVariable Long userId,
+                                            @RequestBody User user)
+    {
+        return ResponseEntity.ok(userService.changeProfilePhoto(userId,user));
+    }
 }
