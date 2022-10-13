@@ -59,6 +59,18 @@ public class UserService extends BaseService implements IUserService
             throw new RuntimeException("You can't delete this account!!!");
     }
 
+    public User changeProfilePhoto(Long userId, User user)
+    {
+        User userToEdit = userRepository.getById(userId);
+        User accountOwner = getCurrentUser();
+        if(accountOwner == userToEdit)
+        {
+            userToEdit.setProfilePhoto(user.getProfilePhoto());
+            return userRepository.save(userToEdit);
+        }
+        else
+            throw new RuntimeException("You can't edit this profile!!!");
+    }
     @Override
     public User editUser(Long userId, User user)
     {
@@ -69,7 +81,6 @@ public class UserService extends BaseService implements IUserService
             userToEdit.setFirstName(user.getFirstName());
             userToEdit.setLastName(user.getLastName());
             userToEdit.setUsername(user.getUsername());
-            userToEdit.setPassword(accountOwner.getPassword());
             userToEdit.setEmail(user.getEmail());
             userToEdit.setProfilePhoto(user.getProfilePhoto());
             return userRepository.save(userToEdit);
